@@ -1,0 +1,16 @@
+
+@import '../../../../../../stylesheet/responsive';
+@include responsive(not-desktop) {
+    app-video {
+        width: 100%; 
+    }
+}
+
+.page-nation-wrap {
+    position: sticky;
+    top: -25px;
+    left: 0;
+    z-index: 99;
+    background: #fff;
+    padding: 5px;
+}

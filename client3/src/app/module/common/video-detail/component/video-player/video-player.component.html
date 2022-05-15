@@ -1,0 +1,52 @@
+<div class="video-container">
+    <div class="video" #videoDom>
+        <div class="layer video-layer">
+            <div class="wrapper" [style.transform]="'scale(' + videoScale + ')'" [style.width.px]="videoWidth" [style.height.px]="videoHeight">
+                <app-youtube-player *ngIf="video" #youtubePlayer [videoId]="video.ytId"></app-youtube-player>
+            </div>
+        </div>
+        <div class="layer comment-layer">
+            <canvas #canvas></canvas>
+        </div>
+        <div class="comment-position-layer" (mousedown)="onMouseDownCommentPositionLayer($event);" (touchstart)="onMouseDownCommentPositionLayer($event);"
+        [hidden]="!commentInput.value || !isInitedCommentPositionLayer" #commentPositionLayer>{{commentInput.value}}</div>
+    </div>
+</div>
+<div class="footer">
+    <div [hidden]="isEmbed">
+        <div [hidden]="!_core.isLoggedIn">
+            <div class="comment-wrap">
+                <!-- <button mat-ripple style="flex: 0 0 90px; height: 45px; background-color: #eee; color: #555;">
+                    <div *ngIf="writeType === ''">랜덤</div>
+                    <div *ngIf="writeType === ''">지정</div>
+                </button> -->
+                <div style="flex: 1; position: relative;">
+                    <input [disabled]="isWritingComment" class="input" style="height: 45px;" placeholder="코멘트를 입력하세요." #commentInput [@commentInputLabel]="writeCommentInput.time !== null ? 'open' : 'close'"  [(ngModel)]="writeCommentInput.text" (click)="commentInput.select();" (keyup.enter)="writeComment();">
+                    <div *ngIf="writeCommentInput.time !== null" style="pointer-events: none; position: absolute; bottom: 5px; color: #555; left: 10px; font-size: 11px;">
+                        <span>{{writeCommentInput.time | date : 'mm:ss'}}에 코멘트 작성</span>
+                        <span *ngIf="isWritingComment">&nbsp;중...</span>
+                    </div>
+                </div>
+                <button [disabled]="isWritingComment" style="flex: 0 0 60px; height: 45px; background-color: rgb(0, 102, 255); color: #fff;" mat-ripple (click)="writeComment();">작성</button>
+            </div>
+        </div>
+        <div [hidden]="_core.isLoggedIn">
+            <div class="comment-wrap">
+                <button style="flex: 0 0 100%; font-size: 15px; animation:blink-text infinite 1s; background-color: rgb(0, 102, 255); color: #fff; height: 45px;" mat-ripple (click)="_core.signIn();">로그인 후 코멘트를 달아보세요</button>
+            </div>
+        </div>
+    </div>
+
+
+    <ng-container *ngIf="video && isEmbed">
+        <a class="btn" style="height: 45px; padding: 0 10px; width: 100%; text-align: center; background-color: #f5f5f5; text-decoration: none; color: #000; display: block; line-height: 45px; cursor: pointer; font-size: 15px; animation:blink-text infinite 1s;" href="https://miniple.tv/list/main?v={{video.id}}" target="_blank">코멘트작성은 미니플에서</a>
+    </ng-container>
+</div>
+
+<style>
+    @keyframes blink-text {
+        50%{
+            color:transparent;
+        }
+    }
+</style>

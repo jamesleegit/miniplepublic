@@ -1,0 +1,25 @@
+<div class="video" mat-ripple  
+(click)="onClick.emit(data);"
+    *ngIf="data">
+    <div class="thumbnail" style="position: relative;" [style.background-image]="'url(' + data.thumbnailSrc + ')'">
+        <div style="position: absolute; top: 4px; right: 4px; color: #fff; padding: 3px; font-size: 11px; background-color: rgba(0,0,0,.5);" *ngIf="data.duration">{{data.duration | videoTime }}</div>
+        <div style="display: flex; align-items: center; position: absolute;bottom: 0; left: 0; width: 100%; color: #fff; padding: 10px 5px 5px; font-size: 11px; text-align: right; background: linear-gradient(180deg, transparent, #000);">
+            <span>조회 {{data.views }}회</span>
+            <span style="flex: 1;"></span>
+            <span>{{data.createTime | timeAgo }}</span>
+        </div>
+    </div>
+    
+    <div class="title" >
+        <span>{{data.title}}</span>
+    </div>
+</div>
+
+<div class="video" mat-ripple *ngIf="!data">
+    <div class="thumbnail" style="position: relative; background-color: #eee;">
+    </div>
+    <div class="title">
+        <div style="height: 16px; background-color: #eee; width: 100%;"></div>
+        <div style="height: 16px; background-color: #eee; width: 60px; margin-top: 5px;"></div>
+    </div>
+</div>

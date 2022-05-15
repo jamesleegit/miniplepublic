@@ -1,0 +1,28 @@
+<div class="comment-wrap" >
+    <ng-container *ngIf="data">
+        <div class="wrapper">
+            <div class="thumbnail" *ngIf="data.user" [style.background-image]="'url(' + data.user.thumbnailSrc + ')'"></div>
+            <div class="thumbnail" *ngIf="!data.user"></div>
+            <div class="text">
+                <div style="display: flex; align-items: center; margin-bottom: 3px;">
+                    <span *ngIf="data.user" class="nickname text-ellipsis" style="font-size: 12px; margin-right: 5px; flex: 1; width: 1px;">{{data.user.nickname}}</span>
+                    <span style="font-size: 11px; color: #888; font-weight: normal;">{{data.createTime | timeAgo}}</span>
+                </div>
+                <div>{{data.text}}</div>
+            </div>
+            <button mat-ripple [matMenuTriggerFor]="menu" style="width: 28px; height: 28px; align-self: flex-start; margin-top: 5px; border-radius: 50%;">
+                <svg width=18 height=18 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 60 60" style="enable-background:new 0 0 60 60;" xml:space="preserve">
+                    <g><path fill="#aaa" d="M30,16c4.411,0,8-3.589,8-8s-3.589-8-8-8s-8,3.589-8,8S25.589,16,30,16z"/><path fill="#aaa" d="M30,44c-4.411,0-8,3.589-8,8s3.589,8,8,8s8-3.589,8-8S34.411,44,30,44z"/><path fill="#aaa" d="M30,22c-4.411,0-8,3.589-8,8s3.589,8,8,8s8-3.589,8-8S34.411,22,30,22z"/></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
+            </button>
+        </div>
+        <mat-menu #menu="matMenu" >
+            <button mat-menu-item (click)="onPlayTime.emit(data.time);">
+                <span>이동</span>
+                <span style="color: #888; font-size: 12px;">&nbsp;{{data.time | videoTime}}</span>
+            </button>
+            <button (click)="removeComment();" mat-menu-item *ngIf="_core.isLoggedIn && data.user && _core.user.id === data.user.id">댓글삭제</button>
+        </mat-menu>
+    </ng-container>
+    
+<!-- <span style="font-size: 11px; color: #888; font-weight: normal; margin-right: 5px;">{{data.time | date : 'mm:ss'}}</span> -->
+</div>

@@ -1,0 +1,18 @@
+<div class="layout">
+    <div class="page-nation-wrap ">
+        <div class="mobile-only">
+            <app-page-nation [start]="start" [limit]="limit" [allCount]="allCount" [pagePadding]="2" (change)="start = $event; onChange.emit($event);">
+            </app-page-nation>
+        </div>
+        <div class="pc-only">
+            <app-page-nation [start]="start" [limit]="limit" [allCount]="allCount" (change)="start = $event; onChange.emit($event);">
+            </app-page-nation>
+        </div>
+    </div>
+    <div class="main-title" *ngIf="title">
+        {{title}}
+    </div>
+    <div class="wrap">
+        <app-video [routerTarget]="routerTarget" [video]="item" *ngFor="let item of list; trackBy: trackByVideo;"></app-video>
+    </div>
+</div>

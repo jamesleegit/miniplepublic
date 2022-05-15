@@ -1,0 +1,63 @@
+<section class="container">
+    <div class="layout layout-main">
+        <header class="header">
+            <div class="wrapper">
+                <button (click)="showSide = true; searchInput.focus(); searchInput.select();" class="btn" style="width: 70px; height: 60px; font-size: 17px; color: rgba(255,255,255,.85); background-color: rgba(0,0,0,.1);" mat-ripple>
+                    검색
+                </button>
+                <div style="flex: 1; text-align: center;">
+                    <button class="btn logo" [routerLink]="['/']">미니플</button>
+                </div>
+                <div style="width: 70px;"></div>
+            </div>
+            <div class="fly-logo"></div>
+        </header>
+        <main>
+            <ng-content></ng-content>
+        </main>
+        <div style="flex: 0 0 60px;"></div>
+    </div>
+    <div class="layout layout-side" [class.active]="showSide" style="border-bottom: 2px solid #000;">
+        <div style="display: flex; align-items: center; height: 58px;">
+            <input style="height: 58px; flex: 1; font-size: 16px; padding-left: 13px;" placeholder="검색어" (keyup.enter)="search(searchInput.value);" #searchInput (click)="searchInput.select();">
+            <button style="font-size: 16px; height: 58px; color: #888; width: 80px;" mat-ripple (click)="showSide = false;">닫기</button>
+        </div>
+    </div>
+
+    <div class="layout layout-loading" [@loading-panel]="!_core.isInited ? 'open' : 'close'" style="display: flex; justify-content: center; align-items: center;">
+        <div>
+            <div style="margin-top: 10px; text-align: center; color: #fff; ">
+                <div style="font-size: 20px; margin-bottom: 10px; color: yellow; animation: loading 1s infinite;">٩(ˊωˋ*)و✧*｡</div>
+                <div style="animation: loading 1s infinite;">미니플 데이터 불러오는 중</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    @keyframes loading {
+        50%{
+            color: transparent;
+        }
+    }
+</style>
+
+
+
+<nav class="nav">
+    <div class="wrapper" style="align-items: center;">
+        <div [routerLink]="['/list/main']" [routerLinkActive]="['active']" class="item" mat-ripple="mat-ripple">메인</div>
+        <div [routerLink]="['/list/search']" [routerLinkActive]="['active']" class="item" mat-ripple="mat-ripple">탐색</div>
+        <div [routerLink]="['/board/free']" [routerLinkActive]="['active']" class="item" mat-ripple="mat-ripple" style="">
+            소통
+        </div>
+        <div class="item" mat-ripple="mat-ripple" (click)="openVideoUpload();">업로드</div>
+        <div (click)="_core.signIn();" class="item" mat-ripple="mat-ripple" *ngIf="!_core.isLoggedIn">로그인</div>
+        <ng-container *ngIf="_core.isLoggedIn">
+            <div style="width: 1px; height: 24px; margin: 0 5px; background-color: #e5e5e5;"></div>
+            <div class="item" mat-ripple="mat-ripple" (click)="openMyProfile();">
+                <div style="width: 45px; margin: 7px auto 0; height: 45px; box-shadow: 0 0 5px rgba(0,0,0,.25); border-radius: 50%; background-size: cover; background-position: center;" [style.background-image]="'url(' + _core.user.thumbnailSrc + ')'"></div>
+            </div>
+        </ng-container>
+    </div>
+</nav>

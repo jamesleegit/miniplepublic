@@ -1,0 +1,29 @@
+<app-header title="유튜브 영상올리기" (onClose)="_matDialogRef.close();"></app-header>
+<div>
+    <div style="display: flex; border-bottom: 1px solid #e5e5e5;">
+        <input style="flex:1;" placeholder="유튜브 영상 주소입력" #urlInput (click)="urlInput.select();" (keyup.enter)="step1(urlInput.value);">
+        <button style="background-color: aqua; height: 40px; width: 80px;" (click)="step1(urlInput.value);">확인</button>
+    </div>
+    <div *ngIf="!id" style="margin-top: 20px; font-size: 16px; color: #888; text-align: center;">
+        유튜브 영상 주소를 입력 후<br/>"확인"버튼을 눌러주세요.
+    </div>
+    <div *ngIf="id">
+        <div style="padding: 20px 20px 0;">
+            <div style="text-align: right; margin-bottom: 5px; color: red; font-size: 12px;">
+                ※ 고의로 욕설이나 영상의 내용과 상관없는 내용을<br/>입력할 경우 "영구제명"합니다.
+            </div>
+            <input style="width: 100%; font-size: 16px; border: 1px solid rgb(32, 121, 255); color:rgb(23 101 218); text-align: center;" placeholder="영상제목 (미입력해도 됩니다.)" #titleInput>
+        </div>
+        <div style="text-align: center; font-weight: bold; padding: 10px 20px 20px; display: flex;">
+            <div style="flex: 1; align-self: center;">
+                <div style="font-size: 13px; margin-bottom: 5px;">유튜브 아이디</div>
+                <div style=" color: rgb(23 101 218); font-size: 20px;">{{id}}</div>
+            </div>
+            <button (click)="submit(titleInput.value);" mat-ripple style="height: 45px; width: 90px; background-color: rgb(32, 121, 255); color: #fff;">
+                영상등록
+            </button>
+        </div>
+        <iframe [src]="src" style="width: 100%; height: 250px; border: 0; background-color: #000;"></iframe>
+    </div>
+
+</div>

@@ -1,0 +1,6 @@
+if (
+    $video.attr('src').split('blob:https://www.youtube.com/')[0] === '' &&
+    $container.attr('id') === 'movie_player' &&
+    $container.attr('is-init-miniple') !== 'true'
+) {
+}

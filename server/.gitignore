@@ -1,0 +1,10 @@
+/node_modules
+/src/config.ts
+/https
+/dist
+/private/https/*
+/private/*
+/src/script.ts
+/public/client/*
+
+!.gitkeep

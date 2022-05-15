@@ -1,0 +1,19 @@
+<div class="page-nation-wrap">
+    <app-page-nation [start]="start" [limit]="limit" [allCount]="allCount" [pagePadding]="2" (change)="start = $event; getList();"></app-page-nation>
+</div>
+<div *ngIf="allCount === 0">작성한 구름이 없습니다.</div>
+<ng-container *ngFor="let item of list; trackBy: trackByItem;">
+    <a *ngIf="item.video" class="line" [href]="'/video/id/' + item.videoId">
+        <div class="thumbnail">
+            <ng-container *ngIf="item.video">
+                <div class="img thumbnail-responsive" [style]="item.video.ngStyle" [matTooltip]="item.video.title"></div>
+            </ng-container>
+        </div>
+        <div class="title text-ellipsis" [matTooltip]="item.text">
+            {{ item.text }}
+        </div>
+        <div class="sub">
+            <span style="background-color: #ddd; margin-left: 5px;">{{item.createTime | timeAgo }}</span>
+        </div>
+    </a>
+</ng-container>

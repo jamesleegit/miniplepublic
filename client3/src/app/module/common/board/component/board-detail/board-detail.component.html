@@ -1,0 +1,25 @@
+<ng-container *ngIf="detail">
+    <div class="title"  style="border-top: 1px solid #ddd; padding: 15px;">{{detail.title}}</div>
+    <div class="sub">
+        <div>
+            <div class="writer" *ngIf="detail.user" mat-ripple>
+                <img [src]="detail.user.thumbnailSrc">
+                <span>{{ detail.user.nickname }}</span>
+            </div>
+        </div>
+        <div style="flex: 1;"></div>
+        <div style="margin-right: 10px;">작성 {{detail.createTime | date : 'yy.MM.dd HH:mm' }}</div>
+        <div>조회수 {{detail.views | number : '.0'}}회</div>
+    </div>
+    <div class="img-wrap">
+        <img [src]="item" *ngFor="let item of detail.$imageSrcs">
+    </div>
+    <div class="content" style="padding: 20px;">{{ detail.content }}</div>
+    <div style="border-radius: 0; background-color: #f5f5f5; text-align: right" *ngIf="_core.user && (_core.user.isAdmin || detail.userId === _core.user.id)">
+        <button color="accent" (click)="delete();" style="background: #333;  height: 40px; padding: 0 15px; color: #fff;">게시글 삭제</button>
+    </div>
+    <div class="comment">
+        <app-board-comment [taskId]="detail.id" *ngIf="detail.category !== 'notice'"></app-board-comment>
+    </div>
+</ng-container>
+<app-spinner *ngIf="isGettingDetail"></app-spinner>
