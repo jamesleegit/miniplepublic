@@ -5,6 +5,7 @@
 안따깝게도 서비스종료됬지만 코드는 깃헙에 공유합니다.
 
 ![ezgif-1-2494c98873](https://user-images.githubusercontent.com/60353730/168453809-6b206aac-27a9-495b-b044-89456cd4b433.gif)
+실제 운영중 모습
 
 --
 
