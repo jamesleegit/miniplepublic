@@ -6,7 +6,9 @@
 
 ![ezgif-1-2494c98873](https://user-images.githubusercontent.com/60353730/168453809-6b206aac-27a9-495b-b044-89456cd4b433.gif)
 
-실제 운영중 모습
+실제 운영중 모습 (2020)
+
+[소개](https://namu.wiki/w/%EB%AF%B8%EB%8B%88%ED%94%8C?rev=60)
 
 --
 
