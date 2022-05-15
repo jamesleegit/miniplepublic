@@ -1,0 +1,80 @@
+.layout {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  > .footer {
+    flex: 1;
+    > .wrapper {
+      display: flex;
+      height: 100%;
+      flex-direction: column;
+      > .content-wrap {
+        flex: 1;
+        min-height: 200px;
+        height: 1px;
+        overflow: auto;
+      }
+    }
+  }
+}
+.player-wrap {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+// fullscreen mode
+.layout.fullscreen {
+  flex-direction: row;
+  background-color: #fff;
+  > .header {
+    flex: 0 0 65%;
+    width: 1px;
+    &,
+    > .player-wrap {
+        height: 100%;
+        border: 0;
+    }
+  }
+  > .footer {
+    flex: 0 0 35%;
+    width: 1px;
+    // .tabs > .item-more,
+    // .tabs > .item-fullscreen {
+    //   display: none;
+    // }
+  }
+}
+:host ::ng-deep .layout.fullscreen app-header .header {
+  display: block !important;
+  > * {
+    width: 100% !important;
+  }
+  > div {
+    padding: 10px 10px 10px 0 !important;
+  }
+  > button {
+    display: none !important;
+    height: 40px !important;
+    border-top: 1px solid #e5e5e5 !important;
+  }
+}
+:host ::ng-deep .layout.fullscreen app-video-player {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  > .video-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    flex: 1;
+    background-color: #000;
+    order: 2;
+    > .video {
+      width: 100%;
+    }
+  }
+
+  > .footer {
+    order: 1;
+  }
+}

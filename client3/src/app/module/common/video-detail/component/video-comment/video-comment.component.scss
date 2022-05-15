@@ -1,0 +1,32 @@
+.comment-wrap {
+    height: 60px;
+}
+.wrapper {
+    display: flex;
+    align-items: center;
+    height: 60px;
+    border-bottom: 1px solid #eee;
+    overflow: hidden;
+    > .thumbnail{
+        width: 46px;
+        height: 46px;
+        margin: 0 0 0 7px;
+        border-radius: 50%;
+        background-color: #eee;
+        background-size: cover;
+        background-position: center;
+        margin-right: 7px;
+    }
+    >.text {
+        flex: 1;
+        width: 1px;
+        word-break: break-all;
+        white-space: normal;
+        align-self: flex-start;
+        padding: 7px 0;
+        font-size: 14px;
+        .nickname {
+            font-weight: bold;
+        }
+    }
+}

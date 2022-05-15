@@ -1,0 +1,217 @@
+<div class="wrapper">
+    <div class="left card">
+        <div style="font-size: 20px; text-align: center; margin-top: 20px;">준비중인 공간입니다.</div>
+    </div>
+    <!-- [style.max-width.px]="1300" -->
+    <div class="main card scroll-1" [style.max-width.px]="980">
+        <div class="video-wrap" #videoWrap [style.height.px]="videoHeight * videoScale">
+            <div class="video" [style.width.px]="videoWidth" [style.height.px]="videoHeight" [style.transform]="'scale(' + videoScale + ')'">
+                <app-video-player-youtube (onInit)="onPlayerInit();" #youtubeVideoPlayer [resource]="resource" *ngIf="resource && resource.origin === 'youtube'"></app-video-player-youtube>
+                <app-video-player-google-drive (onInit)="onPlayerInit();" #googleDriveVideoPlayer [resource]="resource" *ngIf="resource && resource.origin === 'googleDrive'"></app-video-player-google-drive>
+            </div>
+            <div class="canvas">
+                <canvas #canvas></canvas>
+            </div>
+            <div class="input-wrap" [class.show]="mode === 'input'">
+                <input class="input" [style.font-size.px]="fontSize * videoScale" #input (keypress)="onChangeCommentInput();" (keydown)="onChangeCommentInput();"
+                    (keyup)="onChangeCommentInput();" (keyup.esc)="onEscCommentInput();" (keyup.enter)="onEnterCommentInput();">
+                <div class="area" (click)="onClickCommentInputArea($event);"></div>
+                <div class="input input-virtual" [style.font-size.px]="fontSize * videoScale" #inputVirtual></div>
+            </div>
+            <div class="art-wrap" #artWrap [class.show]="mode === 'art'" (click)="onClickCommentArt($event);">
+                <canvas #artCanavas></canvas>
+            </div>
+            <div class="alert-wrap">
+                <div class="alert" [attr.data-theme]="item.theme" *ngFor="let item of alerts; trackBy: trackByAlert;">{{item.text}}</div>
+            </div>
+        </div>
+        <div class="art-panel" [class.show]="mode === 'art'">
+            <div class="wrap">
+                <div class="char-wrap">
+                    <button matRipple class="item" [disabled]="artChars.length === 10" [matTooltip]="'최대 5개 추가가능'" color="primary" (click)="addArtChar();"
+                        style="border: 0; padding: 0; outline: 0; line-height: initial; margin-right: 5px;">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <button matRipple class="item" [disabled]="artChars.length === 1" color="accent" (click)="removeArtChar();" style="border: 0; padding: 0; outline: 0; line-height: initial; margin-right: 10px;">
+
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <div matRipple (click)="activeArtChar = char;" class="item" *ngFor="let char of artChars; let i = index; trackBy: trackByChar;"
+                        [class.active]="activeArtChar === char">
+                        {{char}}
+                        <span style="position: absolute; display: inline-block; height: 15px; line-height: 15px; padding: 0 5px; font-size: 11px; background-color: #000; color: #fff; top:0;left:-2px; border-bottom-right-radius: 10px;">{{i + 1}}</span>
+                    </div>
+                </div>
+                <button mat-raised-button>{{artComments.length}}/500</button>
+                <button mat-raised-button (click)="clearArtComment();" style="margin-left: 10px;">
+                    <i class="fas fa-eraser"></i> 리셋</button>
+                <button mat-raised-button (click)="backArtComment();" style="margin-left: 10px;">
+                    <i class="fas fa-history"></i> 되돌리기</button>
+                <button mat-raised-button color="primary" style="margin-left: 10px;" (click)="writeArtComment();">
+                    <i class="fas fa-play"></i> 작성시작
+                </button>
+            </div>
+        </div>
+        <div class="player-panel">
+            <div class="control-wrap">
+                <div class="btn orange" mat-ripple (click)="togglePlay();">
+                    <i class="fas fa-pause" *ngIf="player && player.playerStatus !== 2"></i>
+                    <i class="fas fa-play" *ngIf="player && player.playerStatus === 2"></i>
+                </div>
+                <div class="gage-wrap">
+                    <ng-container *ngIf="durationTime">
+                        <div class="label">
+                            {{toTimeForDisplay(currentTime)}} / {{toTimeForDisplay(durationTime)}}
+                        </div>
+                        <div class="gage current" [style.width.%]="currentTime / durationTime * 100"></div>
+                        <div class="gage control" (click)="onClickPlayerTimeBar($event);"></div>
+                    </ng-container>
+                    <canvas #timelineCanvas class="timeline"></canvas>
+                </div>
+                <button class="btn btn-float btn-volume">
+                    <div class="btn-wrap" mat-ripple (click)="isMuted ? unMute() : mute();">
+                        <i class="fas fa-volume-up" *ngIf="!isMuted"></i>
+                        <i class="fas fa-volume-mute" *ngIf="isMuted"></i>
+                        <div class="volume-gage-vr">
+                            <div class="item" [style.width.%]="map(videoVolume, 0, 100, 0, 100)"></div>
+                        </div>
+                    </div>
+                    <div class="box volume-gage" mat-ripple (click)="onClickVolumeGage($event);">
+                        <div class="item" [style.height.%]="map(videoVolume, 0, 100, 0, 100)"></div>
+                    </div>
+                </button>
+                <button class="btn btn-etc" mat-ripple [class.orange]="mode === 'youtube'" *ngIf="_core.isLoggedIn" (click)="mode = 'youtube';">
+                    <i class="fab fa-youtube" style="font-size: 1.4em;"></i>
+                </button>
+                <button class="btn btn-etc" mat-ripple [class.orange]="mode === 'input'" *ngIf="_core.isLoggedIn" (click)="mode = 'input';">
+                    <i class="fas fa-cloud"></i>
+                </button>
+                <button class="btn btn-etc" mat-ripple [class.orange]="mode === 'art'" *ngIf="_core.isLoggedIn" (click)="mode = 'art'; clearCommentInput();"
+                    style="font-size: 16px; font-weight: bold; line-height: 25px;">
+                    <div>구름</div>
+                    <div>아트</div>
+                </button>
+                <button class="btn btn-etc" mat-ripple (click)="openSignInPopup();" *ngIf="!_core.isLoggedIn">
+                    <i class="fas fa-cloud"></i>
+                </button>
+                <div class="tooltip" *ngIf="!_core.isLoggedIn">
+                    <span style="color: yellow;">로그인 후 </span>
+                    <span>구름작성!</span>
+                </div>
+                <!-- <ng-container *ngIf="_core.isLoggedIn">
+                    <div class="tooltip">
+                        <span>현재&nbsp;</span>
+                        <span style="color: yellow;" *ngIf="mode === 'youtube'">유튜브모드</span>
+                        <span style="color: yellow;" *ngIf="mode === 'input'">구름모드</span>
+                        <span style="color: yellow;" *ngIf="mode === 'art'">구름아트모드</span>
+                    </div>
+                </ng-container> -->
+            </div>
+            <div class="comment-input-wrap" *ngIf="_core.isLoggedIn">
+                <div class="input-wrap">
+                    <input #randomCommentInput placeholder="구름작성하기 (엔터)" maxlength="100" (keydown)="onChangeRandomCommentInput($event);" (keyup)="onChangeRandomCommentInput($event);"
+                        (focus)="setRandomCommentTime();" (focusout)="clearRandomCommentTime();" (keyup.enter)="writeRandomComment();">
+                    <div style="height: 25px; line-height: 25px; font-size: 12px; padding: 0 10px; border-radius: 15px; margin-top: 5px; background-color: #eee;">
+                        <span *ngIf="randomComment.time">{{ toTimeForDisplay(randomComment.time) }}에 구름작성. 텍스트박스 클릭시 시간재설정.</span>
+                        <span *ngIf="!randomComment.time">입력을 시작하면 구름작성 시각이 설정됩니다.</span>
+                    </div>
+                </div>
+                <div class="btn-wrap">
+                    <button mat-flat-button color="primary" (click)="writeRandomComment();">구름작성</button>
+                </div>
+            </div>
+        </div>
+        <div class="info-wrap" *ngIf="videoId">
+            <ng-container *ngIf="video">
+                <div class="title">
+                    <span style="background: rgb(0, 89, 255);
+                        color: #fff;
+                        border-radius: 5px;
+                        margin-right: 10px;
+                        padding: 3px 5px;" *ngIf="resource.origin === 'googleDrive'">창작</span>
+                    <span style="
+                        color: red;
+                        margin-right: 10px;
+                        padding: 3px 5px;" *ngIf="resource.origin === 'youtube'">
+                        <i class="fab fa-youtube"></i>
+                    </span>
+                    <span>{{ video.title }}</span>
+                    <ng-container>
+                        <span class="vr"></span>
+                        <span class="sub">
+                            <i class="fas fa-comments"></i>
+                            <span>{{comments.length}}</span>
+                        </span>
+                    </ng-container>
+                </div>
+                <div class="sub-title" *ngIf="resource && resource.origin === 'youtube' && player && player.info && player.info.title !== video.title">유튜브제목 : {{player.info.title}}</div>
+                <div class="sub-title" *ngIf="info && info.publishTime">{{info.publishTime | date : 'yyyy.MM.dd'}}</div>
+                <div class="btn-wrap">
+                    <!-- <button mat-stroked-button [class.btn-disabled]="!_core.isLoggedIn" [color]="showInput ? 'primary' : 'white'" (click)="showInput = !showInput;"
+                        [disabled]="!_core.isLoggedIn" [matTooltip]="'구름작성이 활성화 되면 유튜브 플레이어 컨트롤패널이 비활성화됩니다.'">
+                        <i class="fas fa-pen" style="margin-right: 5px;"></i>
+                        <span>구름작성</span>
+                        <span *ngIf="!showInput"> 하기</span>
+                        <span *ngIf="showInput"> 활성화됨</span>
+                    </button>
+                    <div class="vr"></div> -->
+                    <a mat-flat-button class="btn-youtube" *ngIf="resource && resource.origin === 'youtube'" href="https://youtube.com/watch?v={{resource.originId}}"
+                        target="_blank" style="margin-right: 10px;">
+                        <i class="fas fa-play" style="margin-right: 5px;"></i>
+                        <span>Youtube</span>
+                    </a>
+                    <button mat-flat-button color="white" style="border: 1px solid #ddd; margin-right: 10px;">
+                        <i class="far fa-eye"></i>조회수 {{video.views | number : '.0'}}회</button>
+                    <button class="btn-like" color="white" style="border: 1px solid #ddd;" *ngIf="video" mat-flat-button [class.btn-green]="video.isLike"
+                        (click)="likeVideo();" [disabled]="isRequestingLikeVideo || !_core.isLoggedIn">
+                        <i class="far fa-thumbs-up" style="margin-right: 5px;" *ngIf="!isRequestingLikeVideo"></i>
+                        <i class="fas fa-spinner fa-spin" style="margin-right: 5px;" *ngIf="isRequestingLikeVideo"></i>
+                        <span class="em">좋아요 {{ video.likeCount || 0 }}개</span>
+                    </button>
+                </div>
+                <div class="writer-wrap" *ngIf="video.user">
+                    <div class="item card" mat-ripple (click)="openUserDialog(video.user.id)">
+                        <img class="card" [src]="video.user.thumbnailSrc">
+                        <div style="display: inline-block;">
+                            <div class="name">{{video.user.nickname}}</div>
+                            <div class="sub">구독자 0명</div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+    <div class="side card">
+        <div class="tabs">
+            <button class="btn tab" (click)="sideTabType = 'reaction';" [class.active]="sideTabType === 'reaction'" mat-ripple>감정표현수</button>
+            <button class="btn tab" (click)="sideTabType = 'recent';" [class.active]="sideTabType === 'recent'" mat-ripple>최근작성</button>
+            <button class="btn tab" (click)="sideTabType = 'live';" [class.active]="sideTabType === 'live'" mat-ripple>실시간</button>
+        </div>
+        <div class="comment-wrap scroll-1" #commentWrap *ngIf="sideTabType === 'live'" style="padding: .25rem 0;">
+            <div class="comment-line" style="font-weight: bold;">시간대별로 영상에 작성된 구름이 표시됩니다.</div>
+            <app-video-comment (onChange)="onChangeComment($event);" *ngFor="let comment of commentsForChat; trackBy: trackByComment;"
+                [data]="comment" [currentTime]="currentTime" (seekTo)="seekTo($event);"></app-video-comment>
+        </div>
+        <div class="comment-wrap scroll-1" *ngIf="sideTabType === 'recent' || sideTabType === 'reaction'">
+            <div class="page-nation-wrap">
+                <app-page-nation [start]="commentsForListStart" [limit]="commentsForListLimit" [pagePadding]="2" [allCount]="commentsForList.length"
+                    (change)="commentsForListStart = $event; updateCommentsForDisplayList();"></app-page-nation>
+            </div>
+            <app-video-comment *ngFor="let comment of commentsForDisplayList; trackBy: trackByComment;" [showCreateTime]="true" [data]="comment"
+                [currentTime]="currentTime" (onChange)="onChangeComment($event);" (seekTo)="seekTo($event);"></app-video-comment>
+        </div>
+        <div class="comment-input-wrap" *ngIf="_core.isLoggedIn">
+            <div class="input-wrap">
+                <input #randomCommentInput2 placeholder="구름작성하기 (엔터)" maxlength="100" (keydown)="onChangeRandomCommentInput($event);" (keyup)="onChangeRandomCommentInput($event);"
+                    (keyup.enter)="writeRandomComment();">
+                <div style="height: 25px; line-height: 25px; font-size: 12px; padding: 0 10px; border-radius: 15px; margin-top: 5px; background-color: #eee;">
+                    <span *ngIf="randomComment.time">{{ toTimeForDisplay(randomComment.time) }}에 구름작성. 텍스트박스 클릭시 시간재설정.</span>
+                    <span *ngIf="!randomComment.time">입력을 시작하면 구름작성 시각이 설정됩니다.</span>
+                </div>
+            </div>
+            <div class="btn-wrap">
+                <button mat-flat-button color="primary" (click)="writeRandomComment();">구름작성</button>
+            </div>
+        </div>
+    </div>
+</div>

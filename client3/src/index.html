@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="kr">
+
+<head>
+    <meta charset="utf-8">
+    <title>미니플</title>
+    <base href="/">
+    <meta name="description" content="서브컬처 UCC" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="미니플" />
+    <meta property="og:description" content="서브컬처 UCC" />
+    <meta property="og:url" content="minple.tv" />
+    <meta property="article:tag" content="구름" />
+    <meta property="article:tag" content="미니플" />
+    <meta property="article:tag" content="miniple" />
+
+    <!-- 시작할때 전체화면 -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    
+    <style>
+        @font-face {
+            font-family: 'NEXON Lv1 Gothic OTF';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/NEXON Lv1 Gothic OTF.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+        body, html {
+            font-family: 'NEXON Lv1 Gothic OTF', sans-serif;
+            font-size: 14px;
+            background-color: #ddd;
+            margin: 0;
+            padding: 0;
+            line-height: 1;
+        }
+        input, button, textarea, pre {
+            font-family: 'NEXON Lv1 Gothic OTF', sans-serif;
+        }
+        * {
+            user-select: none;
+            box-sizing: border-box;
+            vertical-align: middle;
+            word-break: break-word;
+            white-space: normal;
+        }
+        *:focus {
+            outline: 0;
+        }
+        .material-icons {
+            font-size: 1em;
+            line-height: 1;
+        }
+        button {
+            border: 0;
+            background-color: transparent;
+            cursor: pointer;
+            outline: 0;
+            padding: 0;
+        }
+        .mat-body, .mat-body-1, .mat-typography{
+            font-family: 'NEXON Lv1 Gothic OTF', sans-serif!important;
+            user-select: none!important;
+            box-sizing: border-box!important;
+            vertical-align: middle!important;
+            line-height: 1!important;
+        }
+        
+        body.disable-pull-to-refresh,
+        body.disable-pull-to-refresh * {
+            overscroll-behavior: none;
+        }
+    </style>
+</head>
+
+<body class="mat-typography">
+    <app-root></app-root>
+    <script data-ad-client="ca-pub-6552458606118003" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+     <script>
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        function onYouTubeIframeAPIReady() {
+            window.YouTubeIframeAPICompleted = true;
+        }
+
+        window.requestAnimFrame = (function (callback) {
+            return window.requestAnimationFrame ||
+                window.webkitRequestAnimationFrame ||
+                window.mozRequestAnimationFrame ||
+                window.oRequestAnimationFrame ||
+                window.msRequestAnimationFrame ||
+                function (callback) { window.setTimeout(callback, 1000 / 60); };
+        })();
+    </script>
+</body>
+
+</html>

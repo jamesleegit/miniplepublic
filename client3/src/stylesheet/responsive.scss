@@ -1,0 +1,38 @@
+$pin-2: 980px;
+
+@mixin responsive($width) {
+    @if ($width == desktop) {
+        @media (min-width: $pin-2) {
+            @content;
+        }
+    } @else if ($width == not-desktop) {
+        @media (max-width: $pin-2) {
+            @content;
+        }
+    }
+}
+
+.pc-only-inline-block,
+.mobile-only-inline-block,
+.mobile-only,
+.pc-only {
+  display: none !important;
+}
+
+@include responsive (desktop) {
+  .pc-only {
+    display: block !important;
+  }
+  .pc-only-inline-block {
+    display: inline-block !important;
+  }
+}
+
+@include responsive (not-desktop) {
+  .mobile-only {
+    display: block !important;
+  }
+  .mobile-only-inline-block {
+    display: inline-block !important;
+  }
+}

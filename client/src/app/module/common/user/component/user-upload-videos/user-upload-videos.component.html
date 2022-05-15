@@ -1,0 +1,6 @@
+<div class="page-nation-wrap">
+    <app-page-nation [start]="start" [limit]="limit" [allCount]="allCount" [pagePadding]="2" (change)="start = $event; getList();"></app-page-nation>
+</div>
+<div style="text-align: center; padding: 10px; display: flex; flex-wrap: wrap; justify-content: center;">
+    <app-video style="margin: 5px!important;" *ngFor="let item of list; trackBy: trackByItem;" [video]="item"></app-video>
+</div>

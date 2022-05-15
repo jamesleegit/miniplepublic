@@ -1,0 +1,3 @@
+<app-layout>
+    <app-video-list-by-tag *ngFor="let item of list; trackBy: trackById;" [tags]="item" (onClick)="openPopup($event.id);"></app-video-list-by-tag>
+</app-layout>

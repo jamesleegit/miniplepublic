@@ -1,0 +1,145 @@
+<section class="layout" [class.full-page-mobile]="fullPageMobile" [class.hide-side]="hideSide" [class.show-nav]="showNav">
+    <header>
+        <div class="wrap">
+            <div class="item back mobile-only" *ngIf="fullPageMobile" (click)="back();">
+                <i class="fas fa-history"></i>
+            </div>
+            <div class="item bars" (click)="showNav = !showNav;">
+                <i class="fas fa-bars"></i>
+            </div>
+            <a class="item logo" [routerLink]="['']">
+                <i class="fas fa-cloud"></i> 미니플</a>
+            <div style="flex: 1;" class="vr"></div>
+            <ng-container *ngIf="!_core.isLoggedIn">
+                <a class="item link" style="background-image: url('https://i.imgur.com/RCqZCa1.png'); width: 250px; background-size: cover; height: 50px;"
+                    (click)="signIn();"></a>
+                <div class="vr"></div>
+                <div class="mobile-only item" *ngIf="fullPageMobile">
+                    <i class="fab fa-google" style="margin-right: 2px;"></i>
+                    <span>로그인</span>
+                </div>
+            </ng-container>
+            <ng-container *ngIf="_core.isLoggedIn">
+                <a class="profile-wrap" [routerLink]="['/user/id/' + _core.user.id]" style="cursor: pointer;">
+                    <div class="img">
+                        <img [src]="_core.user.thumbnailSrc">
+                    </div>
+                    <span style="font-weight: bold;">{{_core.user.nickname}}</span>
+                </a>
+            </ng-container>
+        </div>
+    </header>
+    <div class="nav-wrap">
+        <!-- <div class="alert-notice" style="margin-bottom: 10px;" *ngIf="_core.isLoggedIn">
+            <div>
+                사용하시던 계정의 ID/PW를 입력해주세요.
+            </div>
+            <div style="height: 5px;"></div>
+            <input style="background: #fff; padding: 5px; border: 0; border-radius: 5px; border: 1px solid #eee;" placeholder="이메일" (keyup.enter)="moveData();" [(ngModel)]="moveDataInput.id">
+            <div style="height: 5px;"></div>
+            <input  style="background: #fff; padding: 5px; border: 0; border-radius: 5px; border: 1px solid #eee;" placeholder="비밀번호" type="password" (keyup.enter)="moveData();" [(ngModel)]="moveDataInput.password">
+            <div style="height: 5px;"></div>
+            <button (click)="moveData();" mat-raised-button style="font-size: 13px; height: 28px; line-height: 28px;">구름/좋아요 정보 가져오기</button>
+        </div> -->
+        <div class="label">
+            <i class="fas fa-video"></i> 동영상 페이지
+        </div>
+        <div class="item-wrap">
+            <a class="item" mat-ripple [routerLink]="['/video/list/']" [queryParams]="{s: 'popular'}" [routerLinkActive]="['active']">
+                <div class="icon">
+                    <i class="fas fa-fire-alt"></i>
+                </div>
+                <div class="name">인기영상</div>
+            </a>
+            <div class="item-sub-wrap">
+
+            <a class="item item-sub" mat-ripple [routerLink]="['/video/list/']" [queryParams]="{s: 'popularmonth'}" [routerLinkActive]="['active']">
+                <div class="icon">
+                    <i class="fas fa-fire-alt"></i>
+                </div>
+                <div class="name">월간인기</div>
+            </a>
+            <a class="item item-sub" mat-ripple [routerLink]="['/video/list/']" [queryParams]="{s: 'popularweek'}" [routerLinkActive]="['active']">
+                <div class="icon">
+                    <i class="fas fa-fire-alt"></i>
+                </div>
+                <div class="name">주간인기</div>
+            </a>
+        </div>
+
+            <a class="item" mat-ripple [routerLink]="['/video/list/']" [queryParams]="{s: 'recent'}" [routerLinkActive]="['active']">
+                <div class="icon">
+                    <i class="fas fa-history"></i>
+                </div>
+                <div class="name">최신영상</div>
+            </a>
+            <a class="item" mat-ripple [routerLink]="['/video/list/']" [queryParams]="{s: 'recmt'}" [routerLinkActive]="['active']">
+                <div class="icon">
+                    <i class="fas fa-cloud"></i>
+                </div>
+                <div class="name">최신구름</div>
+            </a>
+            <a class="item mark" mat-ripple [routerLink]="['/video/upload/']" [routerLinkActive]="['active']">
+                <div class="icon">
+                    <i class="fas fa-upload"></i>
+                </div>
+                <div class="name">영상업로드</div>
+            </a>
+        </div>
+
+        <div class="label">
+            <i class="fas fa-comments"></i> 커뮤니티
+        </div>
+        <div class="item-wrap">
+            <a class="item" mat-ripple [routerLink]="['/board/humor']" [routerLinkActive]="['active']">
+                <div class="icon">
+                    <i class="fas fa-smile"></i>
+                </div>
+                <div class="name">유머게시판</div>
+            </a>
+            <a class="item" mat-ripple [routerLink]="['/board/free']" [routerLinkActive]="['active']">
+                <div class="icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="name">자유게시판</div>
+            </a>
+            <a class="item" mat-ripple [routerLink]="['/board/improve']" [routerLinkActive]="['active']">
+                <div class="icon">
+                    <i class="fas fa-hands-helping"></i>
+                </div>
+                <div class="name">건의/개선</div>
+            </a>
+            <a class="item" mat-ripple [routerLink]="['/user/list']" [routerLinkActive]="['active']">
+                <div class="icon">
+                    <i class="fas fa-gopuram"></i>
+                </div>
+                <div class="name">회원의 전당</div>
+            </a>
+        </div>
+
+        <ng-container *ngIf="_core.isLoggedIn">
+
+            <div class="label">MY</div>
+            <div class="item-wrap">
+                <a class="item" mat-ripple [routerLink]="['/user/id/' + _core.user.id]" [routerLinkActive]="['active']">
+                    <div class="icon">
+                        <i class="fas fa-cog"></i>
+                    </div>
+                    <div class="name">마이페이지</div>
+                </a>
+                <div class="item" mat-ripple (click)="signOut();">
+                    <div class="icon">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </div>
+                    <div class="name">로그아웃</div>
+                </div>
+            </div>
+        </ng-container>
+
+        <!-- <div class="label">실시간 구름</div> -->
+    </div>
+    <div class="nav-background" (click)="showNav = !showNav;"></div>
+    <main #mainContainer>
+        <ng-content></ng-content>
+    </main>
+</section>

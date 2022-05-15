@@ -1,0 +1,19 @@
+<div class="container">
+    <div class="profile">
+        <ng-container *ngIf="user">
+            <div class="card" style="width: 100px; height: 100px; border-radius: 50%; margin: 0 auto; background-size: cover; background-position: center; background-repeat: no-repeat; background-color: #e5e5e5;"
+                [style.background-image]="user._thumbnailSrc">
+            </div>
+            <div class="nickname">{{ user.nickname }}</div>
+            <button (click)="toggleUserThumbnail();" *ngIf="_core.user && user.id === _core.user.id" mat-flat-button color="primary"
+                style="margin: 0 auto; display: block; width: 150px; margin-top: 5px;">
+                <i class="fas fa-image"></i> 프사 비공개/공개
+            </button>
+            <button (click)="changeUserNickname();" *ngIf="_core.user && user.id === _core.user.id" mat-flat-button color="primary" style="margin: 0 auto; display: block; width: 150px; margin-top: 5px;">
+                <i class="fas fa-sync"></i> 이름변경
+            </button>
+            <button *ngIf="_core.user && _core.user.isAdmin" (click)="blockUser(user.id);">이 사용자 차단</button>
+        </ng-container>
+    </div>
+    <ng-content></ng-content>
+</div>

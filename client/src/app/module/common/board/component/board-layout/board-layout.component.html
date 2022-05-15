@@ -1,0 +1,20 @@
+<div class="layout" *ngIf="category">
+    <div class="container">
+        <div class="header card">
+            <div class="title">
+                <span *ngIf="category === 'free'">자유게시판</span>
+                <span *ngIf="category === 'humor'">유머게시판</span>
+                <span *ngIf="category === 'improve'">건의/개선 게시판</span>
+            </div>
+            <div class="btn-wrap">
+                    <button mat-flat-button color="white" style="box-shadow: 0 0 0 1px #ddd; margin-right: 10px;"  [routerLink]="['/board/' + category + '/list']">
+                        <i class="fas fa-bars"></i> 목록</button>
+                <button mat-flat-button color="primary" [routerLink]="['/board/' + category + '/write']">
+                    <i class="fas fa-pen"></i> 글작성</button>
+            </div>
+        </div>
+        <div class="content card">
+            <ng-content></ng-content>
+        </div>
+    </div>
+</div>
