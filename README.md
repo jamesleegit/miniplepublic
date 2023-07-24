@@ -8,7 +8,7 @@
 
 실제 운영중 모습 (2020)
 
-[소개](https://namu.wiki/w/%EB%AF%B8%EB%8B%88%ED%94%8C)
+[나무위키 소개](https://namu.wiki/w/%EB%AF%B8%EB%8B%88%ED%94%8C)
 
 --
 
